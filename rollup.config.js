@@ -10,7 +10,7 @@ export default {
       format: 'es',
     },
     {
-      name: 'Cacher',
+      name: 'ksh',
       file: pkg.browser,
       format: 'umd',
     },

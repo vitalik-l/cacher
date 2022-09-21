@@ -1,6 +1,6 @@
 {
-  "name": "cacher",
-  "version": "0.0.1",
+  "name": "ksh",
+  "version": "0.0.2",
   "description": "",
   "module": "dist/index.js",
   "browser": "dist/index.umd.js",
