@@ -7,6 +7,10 @@ export default {
   output: [
     {
       file: pkg.module,
+      format: 'es',
+    },
+    {
+      file: pkg.main,
       format: 'cjs',
     },
     {
@@ -15,5 +19,5 @@ export default {
       format: 'umd',
     },
   ],
-  plugins: [typescript(), terser()],
+  plugins: [typescript({ exclude: '**/*.test.ts' }), terser()],
 };
