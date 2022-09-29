@@ -6,7 +6,7 @@ export type Cache<TParams = any, TValue = any, TKey = any> = {
   has: (key: TParams) => boolean;
   clear: () => void;
   clone: () => Cache<TParams, TValue, TKey>;
-  set: (params: TParams, value: TValue) => void;
+  set: (params: TParams, value?: TValue) => void;
   get: (params: TParams) => TValue;
   delete: (params: TParams) => void;
   keys: () => TParams[];
@@ -29,7 +29,8 @@ export const createCache = <TParams = any, TValue = any, TKey = any>(options?: {
       keysCache.clear();
     },
     clone: () => createCache({ ...options, values: cache, keys: keysCache }),
-    set: (params: TParams, value: TValue) => {
+    set: (params: TParams, data?: TValue) => {
+      const value = data ?? params;
       let cursor = cache;
       const keys = paramsToKeys(mapKey(params));
       for (let index = 0, length = keys.length; index < length; index++) {

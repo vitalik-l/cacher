@@ -67,4 +67,9 @@ describe('#createCache', () => {
     cache.delete(2);
     expect(cache.keys()).toStrictEqual([1, 3]);
   });
+
+  test('should set key as value when passing one argument', () => {
+    cache.set('key');
+    expect(cache.get('key')).toBe('key');
+  });
 });
