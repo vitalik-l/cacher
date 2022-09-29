@@ -24,7 +24,10 @@ export const createCache = <TParams = any, TValue = any, TKey = any>(options?: {
   const api = {
     $$cache: cache,
     has: (key: TParams) => !!api.get(key),
-    clear: () => cache.clear(),
+    clear: () => {
+      cache.clear();
+      keysCache.clear();
+    },
     clone: () => createCache({ ...options, values: cache, keys: keysCache }),
     set: (params: TParams, value: TValue) => {
       let cursor = cache;
