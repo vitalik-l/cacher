@@ -1,16 +1,5 @@
-import { flatten } from './flatten';
-
-const isObject = (obj: any) => (obj ?? false)?.constructor?.name === 'Object';
-
 const paramsToKeys = (params: any) => {
-  if (isObject(params)) {
-    const flattenObject = flatten(params);
-    return [Object.keys(flattenObject).join(), ...Object.values(flattenObject)];
-  }
-  if (Array.isArray(params)) {
-    return params;
-  }
-  return [params];
+  return Array.isArray(params) ? params : [params];
 };
 
 export type Cache<TParams = any, TValue = any, TKey = any> = {
