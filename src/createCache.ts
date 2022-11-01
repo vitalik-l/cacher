@@ -38,19 +38,19 @@ export const createCache = <TParams = any, TValue = any, TKey = any>(options?: {
         if (index === length - 1) {
           if (!cursor.has(key)) {
             keysCache.set(params, keys);
-            cursor.set(key, Object.assign(new Map(), { value, params }));
+            cursor.set(key, { value, params });
           } else {
             cursor.get(key).value = value;
             cursor.get(key).params = params;
           }
           continue;
         }
-        if (cursor.has(key) && cursor.get(key) instanceof Map) {
-          cursor = cursor.get(key);
+        if (cursor.get(key)?.next) {
+          cursor = cursor.get(key).next;
           continue;
         }
-        cursor.set(key, new Map());
-        cursor = cursor.get(key);
+        cursor.set(key, { next: new Map() });
+        cursor = cursor.get(key).next;
       }
     },
     get: (params: TParams): TValue => {
@@ -63,7 +63,7 @@ export const createCache = <TParams = any, TValue = any, TKey = any>(options?: {
           result = cursor.get(key)?.value;
           break;
         }
-        cursor = cursor.get(key);
+        cursor = cursor.get(key)?.next;
         if (!cursor) break;
       }
       return result;
@@ -80,7 +80,7 @@ export const createCache = <TParams = any, TValue = any, TKey = any>(options?: {
             delete cursor.get(key).value;
             delete cursor.get(key).params;
           }
-          if (!cursor.get(key)?.size) {
+          if (!cursor.get(key)?.next) {
             cursor.delete(key);
             callbacks.forEach((fn) => fn());
           }
@@ -89,12 +89,12 @@ export const createCache = <TParams = any, TValue = any, TKey = any>(options?: {
         if (!cursor.value) {
           const currentCursor = cursor;
           callbacks.unshift(() => {
-            if (!currentCursor.get(key)?.size) {
+            if (!currentCursor.get(key)?.next) {
               currentCursor.delete(key);
             }
           });
         }
-        cursor = cursor.get(key);
+        cursor = cursor.get(key)?.next;
         if (!cursor) break;
       }
     },
